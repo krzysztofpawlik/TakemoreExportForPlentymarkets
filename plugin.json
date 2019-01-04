@@ -1,0 +1,27 @@
+{
+  "name": "Takemore",
+  "namespace": "Takemore",
+  "type": "export",
+  "version": "1.0.0",
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007",
+  "pluginIcon": "icon_plugin_sm.png",
+  "price": 0.00,
+  "description": "This plugin adds the format Takemore.net to the Elastic Export.",
+  "shortDescription": {
+    "de": "Takemore.net plugin.",
+    "en": "Takemore.net plugin."
+  },
+  "categories": [
+    "3523"
+  ],
+  "marketplaceName": {
+    "de":"Takemore.net",
+    "en":"Takemore.net"
+  },
+  "require": [
+    "ElasticExport"
+  ],
+  "author": "Takemore.net",
+  "authorIcon": "icon_plugin_xs.png",
+  "serviceProvider": "ExportTakemoreNet\\ExportTakemoreNetServiceProvider"
+}
