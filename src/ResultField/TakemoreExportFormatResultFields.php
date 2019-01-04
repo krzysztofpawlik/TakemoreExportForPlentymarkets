@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace ExportTakemoreNet\ResultField;
 
