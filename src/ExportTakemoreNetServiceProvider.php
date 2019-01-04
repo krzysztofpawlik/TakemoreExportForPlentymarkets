@@ -1,4 +1,4 @@
-<?php
+<?
 
 namespace ExportTakemoreNet;
 
@@ -28,8 +28,8 @@ class ExportTakemoreNetServiceProvider extends ServiceProvider
     {
         $container->add(
             'TakemoreNet-plugin',
-            'ExportTakemoreNet\ResultField\ExportFormatResultFields',
-            'ExportTakemoreNet\Generator\ExportFormatGenerator',
+            'ExportTakemoreNet\ResultField\TakemoreExportFormatResultFields',
+            'ExportTakemoreNet\Generator\TakemoreExportFormatGenerator',
             '',
             true,
 			true,
@@ -37,3 +37,4 @@ class ExportTakemoreNetServiceProvider extends ServiceProvider
         );
     }
 }
+?>
