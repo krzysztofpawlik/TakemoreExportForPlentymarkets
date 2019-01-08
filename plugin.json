@@ -1,6 +1,6 @@
 {
   "name": "Takemore",
-  "namespace": "Takemore",
+  "namespace": "ExportTakemoreNet",
   "type": "export",
   "version": "0.0.1",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007",
