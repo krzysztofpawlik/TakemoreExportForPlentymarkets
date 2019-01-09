@@ -81,10 +81,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Currency',
             'ShippingCosts',
             'RRP',
-            'Price',
-            'BasePrice',
-            'BasePriceUnit',
-            'Link'
+            'Price'
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
@@ -123,7 +120,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 						}
 						catch(\Throwable $exception)
 						{
-							$this->getLogger('PluginExportFormatTutorial')->logException($exception);
+							$this->getLogger('ExportTakemoreNet')->logException($exception);
 						}
 						
 						$lines++;
@@ -183,10 +180,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Currency' => $priceList['currency'],
 			'ShippingCosts' => $deliveryCost,
 			'RRP' => $rrp,
-			'Price' => $price,
-			'BasePrice' => $this->elasticExportPriceHelper->getBasePrice($variation, $priceList['price'], $settings->get('lang'), '/', false, false, $priceList['currency']),
-			'BasePriceUnit' => $basePriceList['lot'],
-			'Link' => $this->elasticExportCoreHelper->getMutatedUrl($variation, $settings),
+			'Price' => $price
 		];
 
 		$this->addCSVContent(array_values($data));
