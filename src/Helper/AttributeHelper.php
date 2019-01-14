@@ -103,7 +103,7 @@ class AttributeHelper
             self::CHARACTER_TYPE_MATERIAL*/
         );
 		
-		referrerId = $settings->get('referrerId')
+		referrerId = $settings->get('referrerId');
 
         foreach ($typeList as $type)
         {
