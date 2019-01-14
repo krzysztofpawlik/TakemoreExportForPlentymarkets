@@ -21,25 +21,11 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 {
 	use Loggable;
 
-    /**
-     * @var ElasticExportCoreHelper $elasticExportCoreHelper
-     */
     private $elasticExportCoreHelper;
-
-	/**
-	 * @var ElasticExportPriceHelper $elasticExportPriceHelper
-	 */
     private $elasticExportPriceHelper;
-
-    /**
-     * @var ArrayHelper $arrayHelper
-     */
     private $arrayHelper;
-
-    /**
-     * @var FiltrationService
-     */
     private $filtrationService;
+	private $attributeHelper;
 
     /**
      * ExportFormatGenerator constructor.

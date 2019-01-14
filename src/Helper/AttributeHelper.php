@@ -74,6 +74,8 @@ class AttributeHelper
 		$this->elasticExportPropertyHelper = pluginApp(ElasticExportPropertyHelper::class);
 	}
     
+    const TAKEMORE_REFERENCE						= '9';
+
     /**
      * Get variation attributes.
      *
@@ -108,7 +110,7 @@ class AttributeHelper
 
         foreach ($typeList as $type)
         {
-            $property = $this->elasticExportPropertyHelper->getProperty($variation, $type, Criteo::CRITEO, $settings->get('lang'));
+            $property = $this->elasticExportPropertyHelper->getProperty($variation, $type, self::TAKEMORE_REFERENCE, $settings->get('lang'));
 
             if (strlen(trim($property)) > 0)
             {
