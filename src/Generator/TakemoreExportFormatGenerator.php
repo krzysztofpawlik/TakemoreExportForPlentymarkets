@@ -56,7 +56,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->setDelimiter(";");
 		
-		$this->attributeHelper->setPropertyHelper(); /* Is it possible to move this call to the AttributeHelper creator?
+		$this->attributeHelper->setPropertyHelper(); /* Is it possible to move this call to the AttributeHelper constructor? */
 
 		// add header
 		$this->addCSVContent([
