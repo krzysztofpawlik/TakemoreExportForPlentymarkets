@@ -238,6 +238,9 @@ class TakemoreExportFormatResultFields extends ResultFields
 				'images.all',
 				'images.item',
 				'images.variation',
+				
+				'texts',
+				'skus'
 			],
 
 			'nestedKeys' => [
@@ -296,6 +299,9 @@ class TakemoreExportFormatResultFields extends ResultFields
 					'technicalData',
 					'lang'
 				],
+                'skus' => [
+                    'sku'
+                ]
 			]
 		];
 	}
