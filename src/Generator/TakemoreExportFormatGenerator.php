@@ -71,7 +71,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size',
 			'Color',
             'Currency',
-            'ShippingCosts',
             'RRP',
             'Price',
             'SalePrice'
@@ -174,7 +173,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'RRP' => $rrp,
+			'RRP' => $settings->get('referrerId'),/*$rrp,*/
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList)
 		];

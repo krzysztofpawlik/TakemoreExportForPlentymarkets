@@ -102,10 +102,12 @@ class AttributeHelper
             /*self::CHARACTER_TYPE_PATTERN,
             self::CHARACTER_TYPE_MATERIAL*/
         );
+		
+		referrerId = $settings->get('referrerId')
 
         foreach ($typeList as $type)
         {
-            $property = $this->elasticExportPropertyHelper->getProperty($variation, $type, self::TAKEMORE_REFERENCE, $settings->get('lang'));
+            $property = $this->elasticExportPropertyHelper->getProperty($variation, $type, referrerId, $settings->get('lang'));
 
             if (strlen(trim($property)) > 0)
             {
