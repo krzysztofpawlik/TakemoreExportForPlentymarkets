@@ -158,6 +158,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$size = $variationAttributes["size"];
 		$color = $variationAttributes["color"];
 		$size2 = $variationAttributes["Size"];
+		$this->getLogger(__METHOD__)->debug('size::log.size', ['variationAttributes' => $variationAttributes]);
+		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 1, ElasticExportCoreHelper::ALL_IMAGES));
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -165,7 +167,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Model' => $variation['data']['variation']['model'],
 			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
 			'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
-			'Image' => $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 1, ElasticExportCoreHelper::ALL_IMAGES),
+			'Image' => $images,
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
