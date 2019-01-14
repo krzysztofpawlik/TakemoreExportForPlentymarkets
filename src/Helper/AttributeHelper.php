@@ -90,13 +90,9 @@ class AttributeHelper
 
         foreach($variation['data']['attributes'] as $attributeValue)
         {
-            if(isset($attributeValue['attributeId'])
-                && array_key_exists($attributeValue['attributeId'], $this->linkedAttributeList))
+            if(isset($attributeValue['attributeId']) && strlen($this->attributeValueCache[$attributeValue['valueId']]) > 0)
             {
-                if (strlen($this->attributeValueCache[$attributeValue['valueId']]) > 0)
-                {
-                    $variationAttributes[$this->linkedAttributeList[$attributeValue['attributeId']]][] = $this->attributeValueCache[$attributeValue['valueId']];
-                }
+				$variationAttributes[$attributeValue['attributeId']][] = $this->attributeValueCache[$attributeValue['valueId']];
             }
         }
 
