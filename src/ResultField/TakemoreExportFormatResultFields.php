@@ -17,7 +17,7 @@ use Plenty\Modules\Helper\Models\KeyValue;
  */
 class TakemoreExportFormatResultFields extends ResultFields
 {
-    const DEFAULT_MARKET_REFERENCE = 100.00;
+    const DEFAULT_MARKET_REFERENCE = 9;
 
     /**
      * @var ArrayHelper
