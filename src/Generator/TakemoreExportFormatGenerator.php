@@ -178,8 +178,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
 			'RRP' => $rrp,
-			'Price' => implode('!', array_keys($priceList)),/*$price,*/
-			'SalePrice' => implode('!', $priceList)
+			'Price' => implode('!', array_keys($variationAttributes)),/*$price,*/
+			'SalePrice' => implode('!', $variationAttributes)
 		];
 
 		$this->addCSVContent(array_values($data));
