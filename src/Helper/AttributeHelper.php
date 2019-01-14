@@ -18,8 +18,8 @@ use Plenty\Repositories\Models\PaginatedResult;
  */
 class AttributeHelper
 {
-    const CHARACTER_TYPE_COLOR						= 'color';
-    const CHARACTER_TYPE_SIZE						= 'size';
+    const CHARACTER_TYPE_COLOR						= 'Color';
+    const CHARACTER_TYPE_SIZE						= 'Size';
     /*const CHARACTER_TYPE_PATTERN					= 'pattern';
     const CHARACTER_TYPE_MATERIAL					= 'material';*/
 

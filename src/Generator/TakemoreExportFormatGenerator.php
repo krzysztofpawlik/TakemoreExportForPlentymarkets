@@ -69,7 +69,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Brand',
             'Barcode',
 			'Size',
-			'Size2',
 			'Color',
             'Currency',
             'ShippingCosts',
@@ -155,9 +154,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
 
 		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
-		$size = $variationAttributes["size"];
-		$color = $variationAttributes["color"];
-		$size2 = $variationAttributes["Size"];
+		$size = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];
+		$color = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
 		$this->getLogger(__METHOD__)->info('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
@@ -174,12 +172,11 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
-			'Size2' => $size2,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
 			'RRP' => $rrp,
-			'Price' => implode('!', array_keys($variationAttributes)),/*$price,*/
-			'SalePrice' => implode('!', $variationAttributes)
+			'Price' => $price,
+			'SalePrice' => implode('!', $priceList)
 		];
 
 		$this->addCSVContent(array_values($data));
