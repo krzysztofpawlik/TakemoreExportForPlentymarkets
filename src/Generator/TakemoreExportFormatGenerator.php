@@ -55,6 +55,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$this->filtrationService = pluginApp(FiltrationService::class, ['settings' => $settings, 'filterSettings' => $filter]);
 
 		$this->setDelimiter(";");
+		
+		$this->attributeHelper->setPropertyHelper(); /* Is it possible to move this call to the AttributeHelper creator?
 
 		// add header
 		$this->addCSVContent([
