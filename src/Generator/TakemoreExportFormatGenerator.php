@@ -69,11 +69,13 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Brand',
             'Barcode',
 			'Size',
+			'Size2',
 			'Color',
             'Currency',
             'ShippingCosts',
             'RRP',
-            'Price'
+            'Price',
+            'SalePrice'
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
@@ -155,6 +157,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
 		$size = $variationAttributes["size"];
 		$color = $variationAttributes["color"];
+		$size2 = $variationAttributes["Size"];
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -166,6 +169,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
+			'Size2' => $size2,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
 			'RRP' => $rrp,
