@@ -151,15 +151,16 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			$rrp = '';
 		}
 
-		$basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
-		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings);
+		/* unnecessary $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
+		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
 
 		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
 		$size = $variationAttributes["size"];
 		$color = $variationAttributes["color"];
 		$size2 = $variationAttributes["Size"];
-		$this->getLogger(__METHOD__)->debug('size::log.size', ['variationAttributes' => $variationAttributes]);
-		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 1, ElasticExportCoreHelper::ALL_IMAGES));
+		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
+		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
+		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 
 		$data = [
 			'VariationID' => $variation['id'],
