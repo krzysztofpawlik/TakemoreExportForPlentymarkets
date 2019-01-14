@@ -160,6 +160,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$size2 = $variationAttributes["Size"];
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
+		$this->getLogger(__METHOD__)->info('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
+		$this->getLogger(__METHOD__)->info('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 
 		$data = [
@@ -177,7 +179,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Currency' => $priceList['currency'],
 			'RRP' => $rrp,
 			'Price' => $price,
-			'SalePrice' => $salePrice
+			'SalePrice' => implode('!', $priceList);
 		];
 
 		$this->addCSVContent(array_values($data));
