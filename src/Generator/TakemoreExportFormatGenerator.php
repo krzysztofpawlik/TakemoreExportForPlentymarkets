@@ -6,6 +6,7 @@ use ElasticExport\Helper\ElasticExportCoreHelper;
 use ElasticExport\Helper\ElasticExportPriceHelper;
 use ElasticExport\Helper\ElasticExportStockHelper;
 use ElasticExport\Services\FiltrationService;
+use ExportTakemoreNet\Helper\AttributeHelper;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
@@ -44,9 +45,10 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper)
+    public function __construct(ArrayHelper $arrayHelper, AttributeHelper $attributeHelper)
     {
         $this->arrayHelper = $arrayHelper;
+		$this->attributeHelper = $attributeHelper;
     }
 
     /**
@@ -78,6 +80,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Image',
             'Brand',
             'Barcode',
+			'Size',
+			'Color',
             'Currency',
             'ShippingCosts',
             'RRP',
@@ -148,6 +152,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		{
 			$price = $priceList['price'];
 		}
+		$salePrice = $priceList['salePrice'];
 
 		$rrp = $priceList['recommendedRetailPrice'] > $priceList['price'] ? $priceList['recommendedRetailPrice'] : $priceList['price'];
 		
@@ -158,15 +163,10 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings);
-		
-		if(!is_null($deliveryCost))
-		{
-			$deliveryCost = number_format((float)$deliveryCost, 2, '.', '');
-		}
-		else
-		{
-			$deliveryCost = '';
-		}
+
+		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
+		$size = $variationAttributes["size"];
+		$color = $variationAttributes["color"];
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -177,10 +177,12 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Image' => $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 1, ElasticExportCoreHelper::ALL_IMAGES),
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
+			'Size' => $size,
+			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'ShippingCosts' => $deliveryCost,
 			'RRP' => $rrp,
-			'Price' => $price
+			'Price' => $price,
+			'SalePrice' => $salePrice
 		];
 
 		$this->addCSVContent(array_values($data));
