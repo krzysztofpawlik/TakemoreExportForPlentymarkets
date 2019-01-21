@@ -153,7 +153,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
 
 		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
-		$size = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];
+		/*$size = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];*/
+		$size = $this->elasticExportCoreHelper->getAttributeName($variation, $settings);
 		$color = $variationAttributes[AttributeHelper::CHARACTER_TYPE_COLOR];
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
