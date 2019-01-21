@@ -154,7 +154,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
 		$size = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];
-		$color = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];
+		$color = $variationAttributes[AttributeHelper::CHARACTER_TYPE_COLOR];
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
 		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
 		$this->getLogger(__METHOD__)->info('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
@@ -173,7 +173,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'RRP' => $settings->get('referrerId'),/*$rrp,*/
+			'RRP' => implode(':', $variationAttributes),
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList)
 		];

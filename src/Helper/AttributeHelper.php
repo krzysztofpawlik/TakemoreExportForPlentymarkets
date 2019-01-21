@@ -18,7 +18,7 @@ use Plenty\Repositories\Models\PaginatedResult;
  */
 class AttributeHelper
 {
-    const CHARACTER_TYPE_COLOR						= 'Color';
+    const CHARACTER_TYPE_COLOR						= 'size'; /* Color */
     const CHARACTER_TYPE_SIZE						= 'Size';
     /*const CHARACTER_TYPE_PATTERN					= 'pattern';
     const CHARACTER_TYPE_MATERIAL					= 'material';*/
@@ -74,8 +74,6 @@ class AttributeHelper
 		$this->elasticExportPropertyHelper = pluginApp(ElasticExportPropertyHelper::class);
 	}
     
-    const TAKEMORE_REFERENCE						= '9';
-
     /**
      * Get variation attributes.
      *
