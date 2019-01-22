@@ -6,7 +6,6 @@ use ElasticExport\Helper\ElasticExportCoreHelper;
 use ElasticExport\Helper\ElasticExportPriceHelper;
 use ElasticExport\Helper\ElasticExportStockHelper;
 use ElasticExport\Services\FiltrationService;
-use ExportTakemoreNet\Helper\AttributeHelper;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
@@ -25,16 +24,17 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private $elasticExportPriceHelper;
     private $arrayHelper;
     private $filtrationService;
-	private $attributeHelper;
+	private $priceHelper;
+
 
     /**
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper, AttributeHelper $attributeHelper)
+    public function __construct(ArrayHelper $arrayHelper, PriceHelper $priceHelper)
     {
         $this->arrayHelper = $arrayHelper;
-		$this->attributeHelper = $attributeHelper;
+		$this->priceHelper = $priceHelper;
     }
 
     /**
@@ -56,8 +56,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->setDelimiter(";");
 		
-		$this->attributeHelper->setPropertyHelper(); /* Is it possible to move this call to the AttributeHelper constructor? */
-
 		// add header
 		$this->addCSVContent([
             'VariationID',
@@ -131,6 +129,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private function buildRow($variation, $settings)
 	{
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
+		$priceList2 = $this->priceHelper->getPriceList($variation, $settings);
 
 		if((float)$priceList['recommendedRetailPrice'] > 0)
 		{
@@ -152,14 +151,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		/* unnecessary $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
 
-		$variationAttributes = $this->attributeHelper->getVariationAttributes($variation, $settings);
-		/*$size = $variationAttributes[AttributeHelper::CHARACTER_TYPE_SIZE];*/
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
-		$color = $variationAttributes[AttributeHelper::CHARACTER_TYPE_COLOR];
-		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
-		$this->getLogger(__METHOD__)->debug('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
-		$this->getLogger(__METHOD__)->info('ExportTakemoreNet::log.size', ['variationAttributes' => $variationAttributes]);
-		$this->getLogger(__METHOD__)->info('ExportTakemoreNet::log.price', ['priceList' => $priceList]);
+		$color = ""; /* don't know how to get */
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 
 		$data = [
@@ -174,7 +167,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'RRP' => implode(':', $variationAttributes),
+			'RRP' => implode('!', $priceList2),
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList)
 		];
