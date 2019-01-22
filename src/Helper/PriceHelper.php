@@ -1,6 +1,6 @@
 <?php
 
-namespace ElasticExportRakutenDE\Helper;
+namespace ExportTakemoreNet\Helper;
 
 use Plenty\Modules\Item\SalesPrice\Contracts\SalesPriceRepositoryContract;
 use Plenty\Modules\Item\SalesPrice\Contracts\SalesPriceSearchRepositoryContract;
