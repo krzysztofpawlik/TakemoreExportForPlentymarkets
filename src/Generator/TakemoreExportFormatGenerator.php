@@ -13,6 +13,7 @@ use Plenty\Modules\Helper\Models\KeyValue;
 use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
 use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
+use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
 
 /**
  * Class ExportFormatGenerator
