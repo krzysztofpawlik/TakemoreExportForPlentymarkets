@@ -11,6 +11,7 @@ use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
 use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
+use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
 
 /**
@@ -26,16 +27,17 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private $arrayHelper;
     private $filtrationService;
 	private $priceHelper;
-
+	private $variationSalesPriceRepositoryContract;
 
     /**
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper, PriceHelper $priceHelper)
+    public function __construct(ArrayHelper $arrayHelper, PriceHelper $priceHelper, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
 		$this->priceHelper = $priceHelper;
+		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;
     }
 
     /**
@@ -155,6 +157,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		$color = ""; /* don't know how to get */
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
+		$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -168,7 +171,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'RRP' => implode('!', $priceList2),
+			'RRP' => implode('!', $price3),
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList)
 		];
