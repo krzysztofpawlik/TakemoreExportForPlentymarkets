@@ -171,7 +171,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'RRP' => implode('!', $price3),
+			'RRP' => $price3->price,
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList)
 		];
