@@ -15,6 +15,8 @@ use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryC
 use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
+use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
+use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchResponse;
 
 /**
  * Class ExportFormatGenerator
