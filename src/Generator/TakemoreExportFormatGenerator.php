@@ -75,7 +75,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Currency',
             'RRP',
             'Price',
-            'SalePrice'
+            'SalePrice',
+			'SalePrice2'
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
@@ -174,7 +175,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Currency' => $priceList['currency'],
 			'RRP' => $price3,
 			'Price' => $price,
-			'SalePrice' => implode('!', $priceList)
+			'SalePrice' => implode('!', $priceList),
+			'SalePrice2' => implode('!', $priceList2)
 		];
 
 		$this->addCSVContent(array_values($data));
