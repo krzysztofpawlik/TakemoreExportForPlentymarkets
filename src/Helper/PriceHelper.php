@@ -106,8 +106,8 @@ class PriceHelper
 	 */
 	public function getPriceList($item, KeyValue $settings):array
 	{
-		$countryId = $settings->get('destination');
-		$currency = $this->currencyRepositoryContract->getCountryCurrency($countryId)->currency;
+		/*$countryId = $settings->get('destination');
+		$currency = $this->currencyRepositoryContract->getCountryCurrency($countryId)->currency;*/
 		$variationPriceUpdatedTimestamp = '';
 		$rrpUpdatedTimestamp = '';
 		$specialPriceUpdatedTimestamp = '';
@@ -130,8 +130,8 @@ class PriceHelper
 			$salesPriceSearchRequest->referrerId = $settings->get('referrerId');
 			$salesPriceSearchRequest->plentyId = $settings->get('plentyId');
 			$salesPriceSearchRequest->type = 'default';
-			$salesPriceSearchRequest->countryId = $countryId;
-			$salesPriceSearchRequest->currency = $currency;
+			/*$salesPriceSearchRequest->countryId = $countryId;
+			$salesPriceSearchRequest->currency = $currency;*/
 		}
 
 		$salesPriceSearch  = $this->salesPriceSearchRepositoryContract->search($salesPriceSearchRequest);
