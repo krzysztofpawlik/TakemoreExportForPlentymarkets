@@ -171,7 +171,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			$salesPriceSearchRequest->currency = $priceList['currency'];
 		}
 		$salesPriceSearch  = $this->salesPriceSearchRepositoryContract->search($salesPriceSearchRequest);
-		$price = $salesPriceSearch->price;
 
 		/* unnecessary $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
@@ -196,7 +195,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'RRP' => $price3,
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList),
-			'SalePrice2' => $salesPriceSearch
+			'SalePrice2' => $salesPriceSearch->salesPriceId
 		];
 
 		$this->addCSVContent(array_values($data));
