@@ -166,7 +166,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			$salesPriceSearchRequest->variationId = $variation['id'];
 			$salesPriceSearchRequest->referrerId = $settings->get('referrerId');
 			$salesPriceSearchRequest->plentyId = $settings->get('plentyId');
-			$salesPriceSearchRequest->type = 'default';
+			/*$salesPriceSearchRequest->type = 'default';*/
 			$salesPriceSearchRequest->countryId = $countryId;
 			$salesPriceSearchRequest->currency = $priceList['currency'];
 		}
