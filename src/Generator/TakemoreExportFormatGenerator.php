@@ -193,7 +193,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'RRP' => $price3,
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList),
-			'SalePrice2' => implode('!', $salesPriceSearch)
+			'SalePrice2' => $salesPriceSearch
 		];
 
 		$this->addCSVContent(array_values($data));
