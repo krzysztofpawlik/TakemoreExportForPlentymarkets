@@ -29,16 +29,18 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private $filtrationService;
 	private $priceHelper;
 	private $variationSalesPriceRepositoryContract;
+	private $salesPriceSearchRepositoryContract;
 
     /**
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper, PriceHelper $priceHelper, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract)
+    public function __construct(ArrayHelper $arrayHelper, PriceHelper $priceHelper, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract, SalesPriceSearchRepositoryContract $salesPriceSearchRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
 		$this->priceHelper = $priceHelper;
 		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;
+		$this->salesPriceSearchRepositoryContract = $salesPriceSearchRepositoryContract;
     }
 
     /**
@@ -152,6 +154,18 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		{
 			$rrp = '';
 		}
+		
+		$salesPriceSearchRequest = pluginApp(SalesPriceSearchRequest::class);
+		if($salesPriceSearchRequest instanceof SalesPriceSearchRequest)
+		{
+			$salesPriceSearchRequest->variationId = $variation['id'];
+			$salesPriceSearchRequest->referrerId = $settings->get('referrerId');
+			$salesPriceSearchRequest->plentyId = $settings->get('plentyId');
+			$salesPriceSearchRequest->type = 'default';
+			/*$salesPriceSearchRequest->countryId = $countryId;
+			$salesPriceSearchRequest->currency = $currency;*/
+		}
+		$salesPriceSearch  = $this->salesPriceSearchRepositoryContract->search($salesPriceSearchRequest);
 
 		/* unnecessary $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
@@ -176,7 +190,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'RRP' => $price3,
 			'Price' => $price,
 			'SalePrice' => implode('!', $priceList),
-			'SalePrice2' => implode('!', $priceList2)
+			'SalePrice2' => implode('!', $salesPriceSearch)
 		];
 
 		$this->addCSVContent(array_values($data));
