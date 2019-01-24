@@ -38,12 +38,12 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper, PriceHelper $priceHelper, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract, SalesPriceSearchRepositoryContract $salesPriceSearchRepositoryContract)
+    public function __construct(ArrayHelper $arrayHelper/*, PriceHelper $priceHelper, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract, SalesPriceSearchRepositoryContract $salesPriceSearchRepositoryContract*/)
     {
         $this->arrayHelper = $arrayHelper;
-		$this->priceHelper = $priceHelper;
+		/*$this->priceHelper = $priceHelper;
 		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;
-		$this->salesPriceSearchRepositoryContract = $salesPriceSearchRepositoryContract;
+		$this->salesPriceSearchRepositoryContract = $salesPriceSearchRepositoryContract;*/
     }
 
     /**
@@ -143,7 +143,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		$color = ""; /* don't know how to get */
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
-		$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);
+		/*$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);*/
 
 		$data = [
 			'VariationID' => $variation['id'],
