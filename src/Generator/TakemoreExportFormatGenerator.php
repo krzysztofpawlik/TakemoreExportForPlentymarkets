@@ -157,6 +157,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		{
 			$rrp = '';
 		}
+
+		$countryId = $settings->get('destination');
 		
 		$salesPriceSearchRequest = pluginApp(SalesPriceSearchRequest::class);
 		if($salesPriceSearchRequest instanceof SalesPriceSearchRequest)
@@ -165,8 +167,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			$salesPriceSearchRequest->referrerId = $settings->get('referrerId');
 			$salesPriceSearchRequest->plentyId = $settings->get('plentyId');
 			$salesPriceSearchRequest->type = 'default';
-			/*$salesPriceSearchRequest->countryId = $countryId;
-			$salesPriceSearchRequest->currency = $currency;*/
+			$salesPriceSearchRequest->countryId = $countryId;
+			$salesPriceSearchRequest->currency = $priceList['currency'];
 		}
 		$salesPriceSearch  = $this->salesPriceSearchRepositoryContract->search($salesPriceSearchRequest);
 
