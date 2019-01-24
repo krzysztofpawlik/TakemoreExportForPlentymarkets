@@ -10,13 +10,13 @@ use ExportTakemoreNet\Helper\PriceHelper;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
-use Plenty\Modules\Item\SalesPrice\Contracts\SalesPriceSearchRepositoryContract;
+/*use Plenty\Modules\Item\SalesPrice\Contracts\SalesPriceSearchRepositoryContract;*/
 use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
 use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
-use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
+/*use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
 use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
-use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchResponse;
+use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchResponse;*/
 
 /**
  * Class ExportFormatGenerator
@@ -78,10 +78,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size',
 			'Color',
             'Currency',
-            'RRP',
-            'Price',
-            'SalePrice',
-			'SalePrice2'
+            'Price'
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
@@ -139,38 +136,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private function buildRow($variation, $settings)
 	{
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
-		$priceList2 = $this->priceHelper->getPriceList($variation, $settings);
-
-		if((float)$priceList['recommendedRetailPrice'] > 0)
-		{
-			$price = $priceList['recommendedRetailPrice'] > $priceList['price'] ? $priceList['price'] : $priceList['recommendedRetailPrice'];
-		}
-		else
-		{
-			$price = $priceList['price'];
-		}
-		$salePrice = $priceList['salePrice'];
-
-		$rrp = $priceList['recommendedRetailPrice'] > $priceList['price'] ? $priceList['recommendedRetailPrice'] : $priceList['price'];
-		
-		if((float)$rrp == 0 || (float)$price == 0 || (float)$rrp == (float)$price)
-		{
-			$rrp = '';
-		}
-
-		$countryId = $settings->get('destination');
-		
-		$salesPriceSearchRequest = pluginApp(SalesPriceSearchRequest::class);
-		if($salesPriceSearchRequest instanceof SalesPriceSearchRequest)
-		{
-			$salesPriceSearchRequest->variationId = $variation['id'];
-			$salesPriceSearchRequest->referrerId = $settings->get('referrerId');
-			$salesPriceSearchRequest->plentyId = $settings->get('plentyId');
-			$salesPriceSearchRequest->type = 'default';
-			$salesPriceSearchRequest->countryId = $countryId;
-			$salesPriceSearchRequest->currency = $priceList['currency'];
-		}
-		$salesPriceSearch  = $this->salesPriceSearchRepositoryContract->search($salesPriceSearchRequest);
 
 		/* unnecessary $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
 		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
@@ -192,10 +157,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Color' => $color,
 			'Currency' => $priceList['currency'],
-			'RRP' => $price3,
-			'Price' => $price,
-			'SalePrice' => implode('!', $priceList),
-			'SalePrice2' => $salesPriceSearch->salesPriceId
+			'Price' => $priceList['price']
 		];
 
 		$this->addCSVContent(array_values($data));
