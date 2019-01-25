@@ -146,7 +146,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$color = ""; /* don't know how to get */
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 		/*$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);*/
-		$properties = $this->VariationPropertyValueRepositoryContract->findByVariationId($variation['id']);
+		$properties = $this->variationPropertyValueRepositoryContract->findByVariationId($variation['id']);
 
 		$data = [
 			'VariationID' => $variation['id'],
