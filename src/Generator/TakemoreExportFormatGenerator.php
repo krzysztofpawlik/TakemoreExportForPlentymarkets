@@ -13,6 +13,7 @@ use Plenty\Modules\Helper\Models\KeyValue;
 /*use Plenty\Modules\Item\SalesPrice\Contracts\SalesPriceSearchRepositoryContract;*/
 use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
 use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
+use Plenty\Modules\Item\VariationProperty\Contracts\VariationPropertyValueRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
 /*use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
 use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
@@ -31,19 +32,19 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private $arrayHelper;
     private $filtrationService;
 	private $priceHelper;
-	private $variationSalesPriceRepositoryContract;
+	private $variationPropertyValueRepositoryContract;
 	private $salesPriceSearchRepositoryContract;
 
     /**
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper/*, PriceHelper $priceHelper, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract, SalesPriceSearchRepositoryContract $salesPriceSearchRepositoryContract*/)
+    public function __construct(ArrayHelper $arrayHelper, VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract/*, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract, SalesPriceSearchRepositoryContract $salesPriceSearchRepositoryContract*/)
     {
         $this->arrayHelper = $arrayHelper;
 		/*$this->priceHelper = $priceHelper;
-		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;
-		$this->salesPriceSearchRepositoryContract = $salesPriceSearchRepositoryContract;*/
+		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;*/
+		$this->variationPropertyValueTextRepositoryContract = $variationPropertyValueTextRepositoryContract;
     }
 
     /**
@@ -76,7 +77,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Brand',
             'Barcode',
 			'Size',
-			'Color',
+			'Property1',
             'Currency',
             'Price'
 		]);
@@ -144,6 +145,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$color = ""; /* don't know how to get */
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 		/*$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);*/
+		$properties = $this->VariationPropertyValueRepositoryContract->findByVariationId($variation['id']);
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -155,7 +157,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
-			'Color' => $color,
+			'Color' => $properties,
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price']
 		];
