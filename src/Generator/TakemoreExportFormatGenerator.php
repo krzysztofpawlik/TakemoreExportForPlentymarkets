@@ -15,6 +15,7 @@ use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryC
 use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
 use Plenty\Modules\Item\VariationProperty\Contracts\VariationPropertyValueRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
+use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
 /*use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
 use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
 use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchResponse;*/
@@ -44,7 +45,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
         $this->arrayHelper = $arrayHelper;
 		/*$this->priceHelper = $priceHelper;
 		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;*/
-		$this->variationPropertyValueTextRepositoryContract = $variationPropertyValueTextRepositoryContract;
+		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
     }
 
     /**
