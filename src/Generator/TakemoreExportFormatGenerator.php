@@ -35,6 +35,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $priceHelper;
 	private $variationPropertyValueRepositoryContract;
 	private $salesPriceSearchRepositoryContract;
+	private $propertyId;
 
     /**
      * ExportFormatGenerator constructor.
@@ -79,6 +80,10 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Barcode',
 			'Size',
 			'Property1',
+			'Property2',
+			'Property3',
+			'Property4',
+			'Property5',
             'Currency',
             'Price'
 		]);
@@ -158,12 +163,39 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
-			'Color' => $properties,
+			'Property1' => $this->GetPropertyValue($properties, 0),
+			'Property2' => $this->GetPropertyValue($properties, 1),
+			'Property3' => $this->GetPropertyValue($properties, 2),
+			'Property4' => $this->GetPropertyValue($properties, 3),
+			'Property5' => $this->GetPropertyValue($properties, 4),
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price']
 		];
 
 		$this->addCSVContent(array_values($data));
 	}
+
+	private function GetPropertyValue($properties, $index)
+	{
+		foreach($properties as $property)
+		{
+			if (!array_key_exists($property->propertyId, $this->propertyId)
+			{
+				$i = (is_array(propertyId)) ? count(propertyId) : 0;
+				this->propertyId[$property->propertyId] = $i;
+			}
+			else
+				$i = this->propertyId[$property->propertyId];
+			if ($index == $i)
+			{
+				if ($property->property->valueType == "float")
+					$value = $property->valueFloat;
+				else if ($property->property->valueType == "selection")
+					$value = $property->propertySelection[0]->name;
+				return $value;
+			}
+		}
+	}
+
 }
 ?>
