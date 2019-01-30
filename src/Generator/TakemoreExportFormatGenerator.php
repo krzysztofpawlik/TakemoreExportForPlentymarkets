@@ -29,7 +29,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	use Loggable;
 
     private $elasticExportCoreHelper;
-    private $elasticExportPriceHelper;
+	private $elasticExportPriceHelper;
+	private $elasticExportStockHelper;
     private $arrayHelper;
     private $filtrationService;
 	private $priceHelper;
@@ -60,6 +61,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     {
         $this->elasticExportCoreHelper = pluginApp(ElasticExportCoreHelper::class);
         $this->elasticExportPriceHelper = pluginApp(ElasticExportPriceHelper::class);
+		$this->elasticExportStockHelper = pluginApp(ElasticExportStockHelper::class);
 
         /** @var KeyValue $settings */
 		$settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
@@ -152,6 +154,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 		/*$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);*/
 		$properties = $this->variationPropertyValueRepositoryContract->findByVariationId($variation['id']);
+		$stockList = $this->elasticExportStockHelper->getStockList($variation);
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -169,7 +172,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Property4' => $this->GetPropertyValue($properties, 3),
 			'Property5' => $this->GetPropertyValue($properties, 4),
 			'Currency' => $priceList['currency'],
-			'Price' => $priceList['price']
+			'Price' => $priceList['price'],
+			'Quantity' => $stockList
 		];
 
 		$this->addCSVContent(array_values($data));
