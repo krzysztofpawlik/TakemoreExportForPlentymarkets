@@ -185,7 +185,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 				$this->propertyId[$property->propertyId] = $i;
 			}
 			else
-				$i = this->propertyId[$property->propertyId];
+				$i = $this->propertyId[$property->propertyId];
 			if ($index == $i)
 			{
 				if ($property->property->valueType == "float")
