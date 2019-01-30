@@ -181,8 +181,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		{
 			if (!array_key_exists($property->propertyId, $this->propertyId)
 			{
-				$i = (is_array(propertyId)) ? count(propertyId) : 0;
-				this->propertyId[$property->propertyId] = $i;
+				$i = (is_array($this->propertyId)) ? count($this->propertyId) : 0;
+				$this->propertyId[$property->propertyId] = $i;
 			}
 			else
 				$i = this->propertyId[$property->propertyId];
