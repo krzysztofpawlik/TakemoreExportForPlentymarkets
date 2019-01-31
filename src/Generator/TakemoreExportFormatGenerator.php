@@ -37,18 +37,23 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $salesPriceSearchRepositoryContract;
 	private $variationStockRepositoryContract;
 	private $propertyId;
+	private $propertyRepositoryContract;
 
     /**
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper, VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract, VariationStockRepositoryContract $variationStockRepositoryContract)
+	public function __construct(ArrayHelper $arrayHelper,
+		VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract,
+		VariationStockRepositoryContract $variationStockRepositoryContract,
+		PropertyRepositoryContract $propertyRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
 		/*$this->priceHelper = $priceHelper;
 		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;*/
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
 		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
+		$this->propertyRepositoryContract = $propertyRepositoryContract;
     }
 
     /**
@@ -70,6 +75,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$this->filtrationService = pluginApp(FiltrationService::class, ['settings' => $settings, 'filterSettings' => $filter]);
 
 		$this->setDelimiter(";");
+
+		$allprops = $this->propertyRepositoryContract->all();
 		
 		// add header
 		$this->addCSVContent([
@@ -89,7 +96,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Property5',
             'Currency',
 			'Price',
-			'Quantity'
+			'Quantity',
+			$allprops
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
