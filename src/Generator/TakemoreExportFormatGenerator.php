@@ -177,7 +177,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Property5' => $this->GetPropertyValue($properties, 4),
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price'],
-			'Quantity' => $stockList
+			'Quantity' => json_encode($stockList)
 		];
 
 		$this->addCSVContent(array_values($data));
