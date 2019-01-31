@@ -91,7 +91,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Currency',
 			'Price',
 			'Quantity',
-			$this->allprops
+			json_encode($a)
 		];
 		foreach($this->allprops as $prop)
 		{
