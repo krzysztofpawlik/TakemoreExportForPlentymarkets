@@ -76,7 +76,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->setDelimiter(";");
 
-		$allprops = $this->propertyRepositoryContract->all()->entries;
+		$this->$allprops = $this->propertyRepositoryContract->all()->entries;
 		$header = [
             'VariationID',
             'VariationNo',
@@ -91,7 +91,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Price',
 			'Quantity'
 		];
-		foreach($allprops as $prop)
+		foreach($this->$allprops as $prop)
 		{
 			array_push($header, $prop->backendName);
 		}
@@ -178,7 +178,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Price' => $priceList['price'],
 			'Quantity' => $stock
 		];
-		foreach($allprops as $prop)
+		foreach($this->$allprops as $prop)
 		{
 			array_push($data, $this->GetPropertyValue($properties, $prop->id));
 		}
@@ -190,7 +190,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	{
 		foreach($properties as $property)
 		{
-			if ($property->propertyId == $i)
+			if ($property->propertyId == $id)
 			{
 				if ($property->property->valueType == "float")
 					$value = $property->valueFloat;
