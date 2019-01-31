@@ -31,10 +31,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
     private $elasticExportCoreHelper;
 	private $elasticExportPriceHelper;
-	private $elasticExportStockHelper;
     private $arrayHelper;
     private $filtrationService;
-	private $priceHelper;
 	private $variationPropertyValueRepositoryContract;
 	private $salesPriceSearchRepositoryContract;
 	private $variationStockRepositoryContract;
@@ -51,8 +49,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		PropertyRepositoryContract $propertyRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
-		/*$this->priceHelper = $priceHelper;
-		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;*/
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
 		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
 		$this->propertyRepositoryContract = $propertyRepositoryContract;
@@ -69,7 +65,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     {
         $this->elasticExportCoreHelper = pluginApp(ElasticExportCoreHelper::class);
         $this->elasticExportPriceHelper = pluginApp(ElasticExportPriceHelper::class);
-		$this->elasticExportStockHelper = pluginApp(ElasticExportStockHelper::class);
 
         /** @var KeyValue $settings */
 		$settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
@@ -78,8 +73,11 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->setDelimiter(";");
 
-		$page = $this->propertyRepositoryContract->search();
-		$this->allprops = $page->getResult();
+		$propertyResult = $this->propertyRepositoryContract->search();
+		if ($propertyResult instanceof PaginatedResult)
+			$this->allprops = $propertyResult->getResult();
+		else
+			$this->allprops = [];
 		$header = [
             'VariationID',
             'VariationNo',

@@ -23,5 +23,8 @@
   ],
   "author": "Takemore.net",
   "authorIcon": "icon_plugin_xs.png",
-  "serviceProvider": "ExportTakemoreNet\\ExportTakemoreNetServiceProvider"
+  "serviceProvider": "ExportTakemoreNet\\ExportTakemoreNetServiceProvider",
+  "runOnBuild": [
+    "ExportTakemoreNet\\Migrations\\CreateOrderReferrer"
+  ]
 }
