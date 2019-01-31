@@ -19,6 +19,7 @@ use Plenty\Plugin\Log\Loggable;
 use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
 use Plenty\Modules\Item\VariationStock\Models\VariationStock;
 use Plenty\Modules\Item\Property\Models\Property;
+use Plenty\Repositories\Models\PaginatedResult;
 
 /**
  * Class ExportFormatGenerator
