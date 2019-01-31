@@ -78,7 +78,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->setDelimiter(";");
 
-		$a = $this->propertyRepositoryContract->all();
+		$a = $this->propertyRepositoryContract->search();
 		$this->allprops = $a->getResult();
 		$header = [
             'VariationID',
