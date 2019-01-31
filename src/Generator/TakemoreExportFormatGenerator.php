@@ -180,7 +180,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		];
 		foreach($allprops as $prop)
 		{
-			array_push($data, GetPropertyValue($properties, $prop->id));
+			array_push($data, $this->GetPropertyValue($properties, $prop->id));
 		}
 
 		$this->addCSVContent(array_values($data));
