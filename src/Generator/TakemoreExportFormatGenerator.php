@@ -36,18 +36,20 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $priceHelper;
 	private $variationPropertyValueRepositoryContract;
 	private $salesPriceSearchRepositoryContract;
+	private $variationStockRepositoryContract;
 	private $propertyId;
 
     /**
      * ExportFormatGenerator constructor.
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper, VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract/*, VariationSalesPriceRepositoryContract $variationSalesPriceRepositoryContract, SalesPriceSearchRepositoryContract $salesPriceSearchRepositoryContract*/)
+    public function __construct(ArrayHelper $arrayHelper, VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract, VariationStockRepositoryContract $variationStockRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
 		/*$this->priceHelper = $priceHelper;
 		$this->variationSalesPriceRepositoryContract = $variationSalesPriceRepositoryContract;*/
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
+		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
     }
 
     /**
@@ -87,7 +89,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Property4',
 			'Property5',
             'Currency',
-            'Price'
+			'Price',
+			'Quantity'
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
@@ -154,7 +157,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 		/*$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);*/
 		$properties = $this->variationPropertyValueRepositoryContract->findByVariationId($variation['id']);
-		$stockList = $this->elasticExportStockHelper->getStockList($variation);
+		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 
 		$data = [
 			'VariationID' => $variation['id'],
