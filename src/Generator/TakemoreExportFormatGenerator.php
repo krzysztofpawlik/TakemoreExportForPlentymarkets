@@ -36,7 +36,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $variationPropertyValueRepositoryContract;
 	private $salesPriceSearchRepositoryContract;
 	private $variationStockRepositoryContract;
-	private $propertyId;
+	private $allprops;
 	private $propertyRepositoryContract;
 
     /**
@@ -76,10 +76,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->setDelimiter(";");
 
-		$allprops = $this->propertyRepositoryContract->all();
-		
-		// add header
-		$this->addCSVContent([
+		$allprops = $this->propertyRepositoryContract->all()->entries;
+		$header = [
             'VariationID',
             'VariationNo',
             'Model',
@@ -88,17 +86,18 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Image',
             'Brand',
             'Barcode',
-			'Size',
-			'Property1',
-			'Property2',
-			'Property3',
-			'Property4',
-			'Property5',
+			'Variant',
             'Currency',
 			'Price',
-			'Quantity',
-			json_encode($allprops)
-		]);
+			'Quantity'
+		];
+		foreach($allprops as $prop)
+		{
+			array_push($header, $prop->backendName);
+		}
+
+		// add header
+		$this->addCSVContent($header);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
 		{
@@ -175,31 +174,23 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
-			'Property1' => $this->GetPropertyValue($properties, 0),
-			'Property2' => $this->GetPropertyValue($properties, 1),
-			'Property3' => $this->GetPropertyValue($properties, 2),
-			'Property4' => $this->GetPropertyValue($properties, 3),
-			'Property5' => $this->GetPropertyValue($properties, 4),
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price'],
 			'Quantity' => $stock
 		];
+		foreach($allprops as $prop)
+		{
+			array_push($data, GetPropertyValue($properties, $prop->id));
+		}
 
 		$this->addCSVContent(array_values($data));
 	}
 
-	private function GetPropertyValue($properties, $index)
+	private function GetPropertyValue($properties, $id)
 	{
 		foreach($properties as $property)
 		{
-			if (!array_key_exists($property->propertyId, $this->propertyId))
-			{
-				$i = (is_array($this->propertyId)) ? count($this->propertyId) : 0;
-				$this->propertyId[$property->propertyId] = $i;
-			}
-			else
-				$i = $this->propertyId[$property->propertyId];
-			if ($index == $i)
+			if ($property->propertyId == $i)
 			{
 				if ($property->property->valueType == "float")
 					$value = $property->valueFloat;
