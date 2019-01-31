@@ -97,7 +97,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Currency',
 			'Price',
 			'Quantity',
-			$allprops
+			json_encode($allprops)
 		]);
 
 		if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
