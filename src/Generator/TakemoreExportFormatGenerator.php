@@ -18,8 +18,6 @@ use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContrac
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
 use Plenty\Modules\Item\VariationStock\Models\VariationStock;
-/*use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
-use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchResponse;*/
 
 /**
  * Class ExportFormatGenerator
@@ -149,16 +147,15 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private function buildRow($variation, $settings)
 	{
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
-
-		/* unnecessary $basePriceList = $this->elasticExportPriceHelper->getBasePriceDetails($variation, (float) $priceList['price'], $settings->get('lang'));
-		$deliveryCost = $this->elasticExportCoreHelper->getShippingCost($variation['data']['item']['id'], $settings); */
-
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		$color = ""; /* don't know how to get */
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
-		/*$price3 = $this->variationSalesPriceRepositoryContract->findByVariationIdWithInheritance($variation['id']);*/
 		$properties = $this->variationPropertyValueRepositoryContract->findByVariationId($variation['id']);
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
+		if (count($stockList) > 0)
+			$stock = $stockList[0]['netStock'];
+		else
+			$stock = 0;
 
 		$data = [
 			'VariationID' => $variation['id'],
@@ -177,7 +174,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Property5' => $this->GetPropertyValue($properties, 4),
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price'],
-			'Quantity' => json_encode($stockList)
+			'Quantity' => $stock
 		];
 
 		$this->addCSVContent(array_values($data));
