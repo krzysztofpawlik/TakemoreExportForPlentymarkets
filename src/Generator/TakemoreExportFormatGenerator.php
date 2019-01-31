@@ -93,7 +93,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		];
 		foreach($this->allprops as $prop)
 		{
-			array_push($header, $prop->backendName);
+			$header[] = $prop->backendName;
 		}
 
 		// add header
