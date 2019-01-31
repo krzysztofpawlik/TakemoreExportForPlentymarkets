@@ -14,10 +14,11 @@ use Plenty\Modules\Helper\Models\KeyValue;
 use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
 use Plenty\Modules\Item\VariationSalesPrice\Contracts\VariationSalesPriceRepositoryContract;
 use Plenty\Modules\Item\VariationProperty\Contracts\VariationPropertyValueRepositoryContract;
+use Plenty\Modules\Item\VariationStock\Contracts\VariationStockRepositoryContract;
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
-/*use Plenty\Modules\Item\VariationSalesPrice\Models\VariationSalesPrice;
-use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
+use Plenty\Modules\Item\VariationStock\Models\VariationStock;
+/*use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchRequest;
 use Plenty\Modules\Item\SalesPrice\Models\SalesPriceSearchResponse;*/
 
 /**
