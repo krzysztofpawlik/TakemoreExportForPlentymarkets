@@ -160,10 +160,11 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::ALL_IMAGES));
 		$properties = $this->variationPropertyValueRepositoryContract->findByVariationId($variation['id']);
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
-		if (count($stockList) > 0)
-			$stock = $stockList[0]['netStock'];
-		else
-			$stock = 0;
+		$stock = 0;
+		foreach($stockList as $warehouse)
+		{
+			$stock += $warehouse['netStock'];
+		}
 
 		$data = [
 			'VariationID' => $variation['id'],
