@@ -2,7 +2,7 @@
   "name": "Takemore",
   "namespace": "ExportTakemoreNet",
   "type": "export",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007",
   "pluginIcon": "icon_plugin_sm.png",
   "price": 0.00,
@@ -22,7 +22,7 @@
     "ElasticExport"
   ],
   "author": "Takemore.net",
-  "authorIcon": "icon_plugin_xs.png",
+  "authorIcon": "icon_author_xs.png",
   "serviceProvider": "ExportTakemoreNet\\ExportTakemoreNetServiceProvider",
   "runOnBuild": [
     "ExportTakemoreNet\\Migrations\\CreateOrderReferrer"
