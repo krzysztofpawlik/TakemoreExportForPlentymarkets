@@ -189,7 +189,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 	private function GetPropertyValue($properties, $id)
 	{
-		foreach($properties as $property)
+		return json_encode($properties);
+		/*foreach($properties as $property)
 		{
 			if ($property->propertyId == $id)
 			{
@@ -199,7 +200,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 					$value = $property->propertySelection[0]->name;
 				return $value;
 			}
-		}
+		}*/
 	}
 
 }
