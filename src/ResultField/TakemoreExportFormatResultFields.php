@@ -48,32 +48,6 @@ class TakemoreExportFormatResultFields extends ResultFields
 
         $this->setOrderByList(['path' => 'variation.itemId', 'order' => ElasticSearch::SORTING_ORDER_ASC]);
 
-        $itemDescriptionFields = ['texts.urlPath'];
-        $itemDescriptionFields[] = ($settings->get('nameId')) ? 'texts.name' . $settings->get('nameId') : 'texts.name1';
-
-        if($settings->get('descriptionType') == 'itemShortDescription' || $settings->get('previewTextType') == 'itemShortDescription')
-        {
-            $itemDescriptionFields[] = 'texts.shortDescription';
-        }
-
-        if($settings->get('descriptionType') == 'itemDescription'
-            || $settings->get('descriptionType') == 'itemDescriptionAndTechnicalData'
-            || $settings->get('previewTextType') == 'itemDescription'
-            || $settings->get('previewTextType') == 'itemDescriptionAndTechnicalData')
-        {
-            $itemDescriptionFields[] = 'texts.description';
-        }
-
-        if($settings->get('descriptionType') == 'technicalData'
-            || $settings->get('descriptionType') == 'itemDescriptionAndTechnicalData'
-            || $settings->get('previewTextType') == 'technicalData'
-            || $settings->get('previewTextType') == 'itemDescriptionAndTechnicalData')
-        {
-            $itemDescriptionFields[] = 'texts.technicalData';
-        }
-
-        $itemDescriptionFields[] = 'texts.lang';
-
         // Mutators
         
         /** @var ImageMutator $imageMutator */
