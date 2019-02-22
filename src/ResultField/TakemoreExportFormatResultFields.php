@@ -110,7 +110,68 @@ class TakemoreExportFormatResultFields extends ResultFields
         // Fields
         $fields = [
             [
-                $resultFields
+                /*$resultFields*/
+                //item
+                'item.id',
+                'item.manufacturer.id',
+
+                //variation
+                'id',
+                'variation.availability.id',
+                'variation.stockLimitation',
+                'variation.vatId',
+                'variation.model',
+                'variation.isMain',
+				'variation.number',
+
+                //images
+                'images.all.urlMiddle',
+                'images.all.urlPreview',
+                'images.all.urlSecondPreview',
+                'images.all.url',
+                'images.all.path',
+                'images.all.position',
+
+                'images.item.urlMiddle',
+                'images.item.urlPreview',
+                'images.item.urlSecondPreview',
+                'images.item.url',
+                'images.item.path',
+                'images.item.position',
+
+                'images.variation.urlMiddle',
+                'images.variation.urlPreview',
+                'images.variation.urlSecondPreview',
+                'images.variation.url',
+                'images.variation.path',
+                'images.variation.position',
+
+                //unit
+                'unit.content',
+                'unit.id',
+
+                //defaultCategories
+                'defaultCategories.id',
+
+                //allCategories
+                'ids.categories.all',
+
+                //barcodes
+                'barcodes.code',
+                'barcodes.type',
+
+                //attributes
+                'attributes.attributeValueSetId',
+                'attributes.attributeId',
+                'attributes.valueId',
+
+				//properties
+				'properties.property.id',
+				'properties.property.valueType',
+				'properties.selection.name',
+				'properties.selection.lang',
+				'properties.texts.value',
+                'properties.texts.lang'
             ],
             [
                 $languageMutator,
