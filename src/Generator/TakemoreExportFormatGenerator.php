@@ -202,6 +202,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 				return $value;
 			}
 		}
+		return "NF";
 	}
 
 }
