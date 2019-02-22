@@ -199,9 +199,12 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 					$value = $property->valueInt;
 				else if ($property->property->valueType == "selection")
 					$value = $property->selection->name;
+				else
+					$value = "Unknown type";
 				return $value;
 			}
 		}
+		return "Not found";
 	}
 
 }
