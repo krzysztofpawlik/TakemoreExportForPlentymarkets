@@ -10,6 +10,7 @@ use Plenty\Modules\Item\Search\Mutators\BarcodeMutator;
 use Plenty\Modules\Item\Search\Mutators\ImageMutator;
 use Plenty\Modules\Item\Search\Mutators\KeyMutator;
 use Plenty\Modules\Helper\Models\KeyValue;
+use ElasticExport\DataProvider\ResultFieldDataProvider;
 
 /**
  * Class ExportFormatResultFields
@@ -98,72 +99,18 @@ class TakemoreExportFormatResultFields extends ResultFields
 		{
 			$keyMutator->setKeyList($this->getKeyList());
 			$keyMutator->setNestedKeyList($this->getNestedKeyList());
+        }
+        
+		$resultFieldHelper = pluginApp(ResultFieldDataProvider::class);
+		if($resultFieldHelper instanceof ResultFieldDataProvider)
+		{
+			$resultFields = $resultFieldHelper->getResultFields($settings);
 		}
 
         // Fields
         $fields = [
             [
-                //item
-                'item.id',
-                'item.manufacturer.id',
-
-                //variation
-                'id',
-                'variation.availability.id',
-                'variation.stockLimitation',
-                'variation.vatId',
-                'variation.model',
-                'variation.isMain',
-				'variation.number',
-
-                //images
-                'images.all.urlMiddle',
-                'images.all.urlPreview',
-                'images.all.urlSecondPreview',
-                'images.all.url',
-                'images.all.path',
-                'images.all.position',
-
-                'images.item.urlMiddle',
-                'images.item.urlPreview',
-                'images.item.urlSecondPreview',
-                'images.item.url',
-                'images.item.path',
-                'images.item.position',
-
-                'images.variation.urlMiddle',
-                'images.variation.urlPreview',
-                'images.variation.urlSecondPreview',
-                'images.variation.url',
-                'images.variation.path',
-                'images.variation.position',
-
-                //unit
-                'unit.content',
-                'unit.id',
-
-                //defaultCategories
-                'defaultCategories.id',
-
-                //allCategories
-                'ids.categories.all',
-
-                //barcodes
-                'barcodes.code',
-                'barcodes.type',
-
-                //attributes
-                'attributes.attributeValueSetId',
-                'attributes.attributeId',
-                'attributes.valueId',
-
-				//properties
-				'properties.property.id',
-				'properties.property.valueType',
-				'properties.selection.name',
-				'properties.selection.lang',
-				'properties.texts.value',
-				'properties.texts.lang'
+                $resultFields
             ],
             [
                 $languageMutator,
@@ -176,12 +123,6 @@ class TakemoreExportFormatResultFields extends ResultFields
         if($reference != -1)
         {
             $fields[1][] = $imageMutator;
-        }
-
-        foreach($itemDescriptionFields as $itemDescriptionField)
-        {
-            //texts
-            $fields[0][] = $itemDescriptionField;
         }
 
         return $fields;
