@@ -191,7 +191,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	{
 		foreach($properties as $property)
 		{
-			if ($property->property->Id == $id)
+			if ($property->property->id == $id)
 			{
 				if ($property->property->valueType == "float")
 					$value = $property->valueFloat;
@@ -199,12 +199,9 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 					$value = $property->valueInt;
 				else if ($property->property->valueType == "selection")
 					$value = $property->selection->name;
-				else
-					$value = "Unknown type";
 				return $value;
 			}
 		}
-		return "Not found";
 	}
 
 }
