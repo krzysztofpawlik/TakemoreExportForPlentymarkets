@@ -195,9 +195,9 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			{
 				if ($property['property']['valueType'] == "float")
 					$value = $property['valueFloat'];
-				else if ($property->property->valueType == "int")
+				else if ($property['property']['valueType'] == "int")
 					$value = $property['valueInt'];
-				else if ($property->property->valueType == "selection")
+				else if ($property['property']['valueType'] == "selection")
 					$value = $property['selection']['name'];
 				return $value;
 			}
