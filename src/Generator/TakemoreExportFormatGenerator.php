@@ -157,7 +157,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		//$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::VARIATION_IMAGES));
-		$images = implode(',', $this->elasticExportCoreHelper->getImageList($variation, $settings));
+		$images = implode(',', getVariationImageList($variation, $settings));
 		$properties = $variation['data']['properties'];
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
@@ -187,6 +187,37 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->addCSVContent(array_values($data));
 	}
+
+
+    public function getVariationImageList($item, KeyValue $settings, string $imageType = 'normal'):array
+    {
+        $list = [];
+
+        if(array_key_exists('variation', $item['data']['images']))
+        {
+            foreach($item['data']['images']['variation'] as $image)
+            {
+                $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+            }
+        }
+        /*if(array_key_exists('item', $item['data']['images']))
+        {
+            foreach($item['data']['images']['item'] as $image)
+            {
+                $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+            }
+        }
+        if(array_key_exists('all', $item['data']['images']))
+        {
+            foreach($item['data']['images']['all'] as $image)
+            {
+                $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+            }
+        }*/
+
+        return $list;
+    }
+
 
 	private function GetPropertyValue($properties, $id)
 	{
