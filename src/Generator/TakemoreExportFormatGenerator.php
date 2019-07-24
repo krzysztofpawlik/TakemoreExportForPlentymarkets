@@ -20,6 +20,7 @@ use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
 use Plenty\Modules\Item\VariationStock\Models\VariationStock;
 use Plenty\Modules\Item\Property\Models\Property;
 use Plenty\Repositories\Models\PaginatedResult;
+use Plenty\Modules\Helper\Contracts\UrlBuilderRepositoryContract;
 
 /**
  * Class ExportFormatGenerator
@@ -38,6 +39,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $variationStockRepositoryContract;
 	private $allprops;
 	private $propertyRepositoryContract;
+	private $urlBuilderRepository;
 
     /**
      * ExportFormatGenerator constructor.
@@ -46,12 +48,14 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	public function __construct(ArrayHelper $arrayHelper,
 		VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract,
 		VariationStockRepositoryContract $variationStockRepositoryContract,
-		PropertyRepositoryContract $propertyRepositoryContract)
+		PropertyRepositoryContract $propertyRepositoryContract,
+		UrlBuilderRepositoryContract $urlBuilderRepository)
     {
         $this->arrayHelper = $arrayHelper;
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
 		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
 		$this->propertyRepositoryContract = $propertyRepositoryContract;
+		$this->urlBuilderRepository = $urlBuilderRepository;
     }
 
     /**
