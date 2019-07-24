@@ -20,7 +20,7 @@ use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
 use Plenty\Modules\Item\VariationStock\Models\VariationStock;
 use Plenty\Modules\Item\Property\Models\Property;
 use Plenty\Repositories\Models\PaginatedResult;
-/*use Plenty\Modules\Helper\Contracts\UrlBuilderRepositoryContract;*/
+use Plenty\Modules\Helper\Contracts\UrlBuilderRepositoryContract;
 
 /**
  * Class ExportFormatGenerator
@@ -39,7 +39,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $variationStockRepositoryContract;
 	private $allprops;
 	private $propertyRepositoryContract;
-	/*private $urlBuilderRepository;*/
+	private $urlBuilderRepository;
 
     /**
      * ExportFormatGenerator constructor.
@@ -48,14 +48,14 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	public function __construct(ArrayHelper $arrayHelper,
 		VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract,
 		VariationStockRepositoryContract $variationStockRepositoryContract,
-		PropertyRepositoryContract $propertyRepositoryContract)
-		/*UrlBuilderRepositoryContract $urlBuilderRepository)*/
+		PropertyRepositoryContract $propertyRepositoryContract,
+		UrlBuilderRepositoryContract $urlBuilderRepository)
     {
         $this->arrayHelper = $arrayHelper;
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
 		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
 		$this->propertyRepositoryContract = $propertyRepositoryContract;
-		/*$this->urlBuilderRepository = $urlBuilderRepository;*/
+		$this->urlBuilderRepository = $urlBuilderRepository;
     }
 
     /**
@@ -162,8 +162,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		//$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::VARIATION_IMAGES));
 		//$images = implode(',', $this->elasticExportCoreHelper->getImageList($variation, $settings));
-		//$images = implode(',', $this->getVariationImageList($variation, $settings));
-		$images = implode(',', $this->elasticExportCoreHelper->getSpecificImageList($variation, $settings, 10,  ElasticExportCoreHelper::VARIATION_IMAGES));
+		$images = implode(',', $this->getVariationImageList($variation, $settings));
+		//$images = implode(',', $this->elasticExportCoreHelper->getSpecificImageList($variation, $settings, 10,  ElasticExportCoreHelper::VARIATION_IMAGES));
 		$properties = $variation['data']['properties'];
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
@@ -195,7 +195,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	}
 
 
-    /*public function getVariationImageList($item, KeyValue $settings, string $imageType = 'normal'):array
+    public function getVariationImageList($item, KeyValue $settings, string $imageType = 'normal'):array
     {
         $list = [];
 
@@ -206,7 +206,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
                 $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
             }
         }
-        /+if(array_key_exists('item', $item['data']['images']))
+        /*if(array_key_exists('item', $item['data']['images']))
         {
             foreach($item['data']['images']['item'] as $image)
             {
@@ -219,10 +219,10 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             {
                 $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
             }
-        }+/
+        }*/
 
         return $list;
-    }*/
+    }
 
 
 	private function GetPropertyValue($properties, $id)
