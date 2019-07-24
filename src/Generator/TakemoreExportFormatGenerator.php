@@ -161,7 +161,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		//$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::VARIATION_IMAGES));
-		$images = implode(',', getVariationImageList($variation, $settings));
+		$images = implode(',', $this->getVariationImageList($variation, $settings));
 		$properties = $variation['data']['properties'];
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
