@@ -88,7 +88,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'Model',
             'Name',
             'Description',
-            'Image',
+            'ItemImages',
+            'VariantImages',
             'Brand',
             'Barcode',
 			'Variant',
@@ -162,7 +163,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
 		//$images = implode(',', $this->elasticExportCoreHelper->getImageListInOrder($variation, $settings, 10, ElasticExportCoreHelper::VARIATION_IMAGES));
 		//$images = implode(',', $this->elasticExportCoreHelper->getImageList($variation, $settings));
-		$images = implode(',', $this->getVariationImageList($variation, $settings));
+		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
+		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
 		//$images = implode(',', $this->elasticExportCoreHelper->getSpecificImageList($variation, $settings, 10,  ElasticExportCoreHelper::VARIATION_IMAGES));
 		$properties = $variation['data']['properties'];
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
@@ -178,7 +180,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Model' => $variation['data']['variation']['model'],
 			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
 			'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
-			'Image' => $images,
+			'ItemImages' => $itemImages,
+			'VariantImages' => $variationImages,
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
 			'Size' => $size,
@@ -195,35 +198,17 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	}
 
 
-    public function getVariationImageList($item, KeyValue $settings, string $imageType = 'normal'):array
+    public function getVariationImageList($item, KeyValue $settings, string $type, string $imageType = 'normal'):array
     {
         $list = [];
 
-        if(array_key_exists('variation', $item['data']['images']))
+        if(array_key_exists($type, $item['data']['images']))
         {
-            foreach($item['data']['images']['variation'] as $image)
+            foreach($item['data']['images'][$type] as $image)
             {
-				//$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
-				$list[] = 'V>' . $image['url'];
+				$list[] = $image['url'];
             }
         }
-        if(array_key_exists('item', $item['data']['images']))
-        {
-            foreach($item['data']['images']['item'] as $image)
-            {
-				//$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
-				$list[] = 'I>' . $image['url'];
-            }
-        }
-        if(array_key_exists('all', $item['data']['images']))
-        {
-            foreach($item['data']['images']['all'] as $image)
-            {
-                //$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
-				$list[] = 'A>' . $image['url'];
-            }
-        }
-
         return $list;
     }
 
