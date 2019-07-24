@@ -210,7 +210,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
         {
             foreach($item['data']['images']['item'] as $image)
             {
-                $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+				$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+				$list[] = $image;
             }
         }
         /*if(array_key_exists('all', $item['data']['images']))
