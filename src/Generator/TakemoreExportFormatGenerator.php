@@ -203,24 +203,26 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
         {
             foreach($item['data']['images']['variation'] as $image)
             {
-                $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+				//$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+				$list[] = 'V>' . $image->url;
             }
         }
         if(array_key_exists('item', $item['data']['images']))
         {
             foreach($item['data']['images']['item'] as $image)
             {
-				$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
-				$list[] = json_encode($image);
+				//$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+				$list[] = 'I>' . $image->url;
             }
         }
-        /*if(array_key_exists('all', $item['data']['images']))
+        if(array_key_exists('all', $item['data']['images']))
         {
             foreach($item['data']['images']['all'] as $image)
             {
-                $list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+                //$list[] = $this->urlBuilderRepository->getImageUrl($image['path'], $settings->get('plentyId'), $imageType, $image['fileType'], $image['type'] == 'external');
+				$list[] = 'A>' . $image->url;
             }
-        }*/
+        }
 
         return $list;
     }
