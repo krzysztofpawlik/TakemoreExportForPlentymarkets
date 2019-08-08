@@ -20,6 +20,7 @@ use Plenty\Modules\Item\VariationProperty\Models\VariationPropertyValue;
 use Plenty\Modules\Item\VariationStock\Models\VariationStock;
 use Plenty\Modules\Item\Property\Models\Property;
 use Plenty\Repositories\Models\PaginatedResult;
+use ElasticExport\Helper\ElasticExportCategoryHelper;
 
 /**
  * Class ExportFormatGenerator
@@ -38,6 +39,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $variationStockRepositoryContract;
 	private $allprops;
 	private $propertyRepositoryContract;
+	private $elasticExportCategoryHelper;
 
     /**
      * ExportFormatGenerator constructor.
@@ -65,6 +67,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     {
         $this->elasticExportCoreHelper = pluginApp(ElasticExportCoreHelper::class);
         $this->elasticExportPriceHelper = pluginApp(ElasticExportPriceHelper::class);
+		$this->elasticExportCategoryHelper = pluginApp(ElasticExportCategoryHelper::class);
 
         /** @var KeyValue $settings */
 		$settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
@@ -83,7 +86,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'VariationNo',
             'Model',
             'Name',
-            'Description',
+			'Description',
+			'Category',
             'ItemImages',
             'VariantImages',
             'Brand',
@@ -173,6 +177,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Model' => $variation['data']['variation']['model'],
 			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
 			'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
+			'Category' => $this->getCategories($variation, $settings),
 			'ItemImages' => $itemImages,
 			'VariantImages' => $variationImages,
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
@@ -222,6 +227,32 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			}
 		}
 	}
+
+
+    private function getCategories($variation, $settings)
+	{
+		$allCategories = '';
+		
+		foreach($variation['data']['ids']['categories']['branches'] as $categoryId)
+		{
+			$categoryPath = $this->elasticExportCategoryHelper->getCategoryPath($categoryId, $settings, '>');
+			
+			if(strlen($categoryPath) > 0)
+			{
+				if(strlen($allCategories) > 0)
+				{
+					$allCategories = $allCategories.' || '.$categoryPath;
+				}
+				else
+				{
+					$allCategories = $categoryPath;
+				}
+			}
+		}
+		
+		return $allCategories;
+	}
+
 
 }
 ?>
