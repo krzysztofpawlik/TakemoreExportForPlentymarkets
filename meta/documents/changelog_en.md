@@ -1,5 +1,10 @@
 # Release Notes for Elastic Export Takemore.net
 
+## v1.0.4 (2019-08-08)
+ 
+### Added
+- Added category
+
 ## v1.0.3 (2019-07-24)
  
 ### Changed
