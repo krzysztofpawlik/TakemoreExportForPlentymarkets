@@ -84,6 +84,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$header = [
             'VariationID',
             'VariationNo',
+            'Parent',
             'Model',
             'Name',
 			'Description',
@@ -95,7 +96,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Variant',
             'Currency',
 			'Price',
-			'Quantity'
+			'Quantity',
+			'Link'
 		];
 		foreach($this->allprops as $prop)
 		{
@@ -160,7 +162,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private function buildRow($variation, $settings)
 	{
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
-		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings);
+		$attributesList = ["size"];
+		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings, ',', $attributesList);
 		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
 		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
 		$properties = $variation['data']['properties'];
@@ -174,6 +177,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$data = [
 			'VariationID' => $variation['id'],
 			'VariationNo' => $variation['data']['variation']['number'],
+			'Parent' => $variation['data']['item']['id'],
 			'Model' => $variation['data']['variation']['model'],
 			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
 			'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
@@ -185,7 +189,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'Size' => $size,
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price'],
-			'Quantity' => $stock
+			'Quantity' => $stock,
+			'Link' => $this->elasticExportCoreHelper->getMutatedUrl($variation, $settings, true, false)
 		];
 		foreach($this->allprops as $prop)
 		{
