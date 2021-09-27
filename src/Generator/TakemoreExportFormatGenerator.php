@@ -162,8 +162,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private function buildRow($variation, $settings)
 	{
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
-		$attributesList = ["size"];
-		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings, ',', $attributesList);
+		/*$attributesList = ['size'];*/
+		$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings, ','/*, $attributesList*/);
 		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
 		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
 		$properties = $variation['data']['properties'];
