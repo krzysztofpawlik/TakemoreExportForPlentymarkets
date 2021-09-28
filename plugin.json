@@ -18,9 +18,9 @@
     "de":"Takemore.net",
     "en":"Takemore.net"
   },
-  "require": [
-    "ElasticExport"
-  ],
+  "require": {
+    "ElasticExport": "1:0:0"
+  },
   "author": "Takemore.net",
   "authorIcon": "icon_author_xs.png",
   "serviceProvider": "ExportTakemoreNet\\ExportTakemoreNetServiceProvider",
