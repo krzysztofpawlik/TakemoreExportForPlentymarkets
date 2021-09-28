@@ -1,5 +1,12 @@
 # Release Notes für Elastic Export Takemore.net
 
+## v1.0.5 (2021-09-28)
+ 
+### Hinzugefügt
+- ParentID und Produktseite-URL hinzugefügt
+### Geändert
+- Variantengröße und Farbe getrennt
+
 ## v1.0.4 (2019-08-08)
 
 ### Hinzugefügt
