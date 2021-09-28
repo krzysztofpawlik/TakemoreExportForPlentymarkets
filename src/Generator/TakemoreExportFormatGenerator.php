@@ -40,6 +40,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $allprops;
 	private $propertyRepositoryContract;
 	private $elasticExportCategoryHelper;
+	private $marketAttributeHelperRepository;
 
     /**
      * ExportFormatGenerator constructor.
@@ -48,12 +49,14 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	public function __construct(ArrayHelper $arrayHelper,
 		VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract,
 		VariationStockRepositoryContract $variationStockRepositoryContract,
-		PropertyRepositoryContract $propertyRepositoryContract)
+		PropertyRepositoryContract $propertyRepositoryContract,
+		MarketAttributeHelperRepositoryContract $marketAttributeHelperRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
 		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
 		$this->propertyRepositoryContract = $propertyRepositoryContract;
+		$this->marketAttributeHelperRepository = $marketAttributeHelperRepositoryContract;
     }
 
     /**
@@ -164,7 +167,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
 		$attributesList = ['size'];
 		//$size = $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings, ',', $attributesList);
-		$size = json_encode($variation['data']['attributes']);
+		$size = json_encode(getAttributeValues($variation));
 		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
 		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
 		$properties = $variation['data']['properties'];
@@ -200,6 +203,20 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 
 		$this->addCSVContent(array_values($data));
 	}
+
+
+	private function getAttributeValues($variation)
+	{
+		$result = [];
+		foreach($variation['data']['attributes'] as $attribute)
+		{
+			if (!$attribute['attributeValueSetId'])
+				continue;
+			$attributeName = $this->marketAttributeHelperRepository->getAttributeName($attribute['attributeId'], 'en');
+			$attributeValueName = $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'en');
+			$result[$attributeName] = $attributeValueName;
+		}
+}
 
 
     public function getVariationImageList($item, KeyValue $settings, string $type, string $imageType = 'normal'):array
