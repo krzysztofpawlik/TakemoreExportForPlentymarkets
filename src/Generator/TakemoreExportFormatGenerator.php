@@ -217,6 +217,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			$attributeValueName = $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'en');
 			$result[$attributeName] = $attributeValueName;
 		}
+        return $result;
 }
 
 
