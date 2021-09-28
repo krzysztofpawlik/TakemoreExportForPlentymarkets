@@ -19,7 +19,7 @@
     "en":"Takemore.net"
   },
   "require": {
-    "ElasticExport": "1:0:0"
+    "ElasticExport": ">=1:0:0"
   },
   "author": "Takemore.net",
   "authorIcon": "icon_author_xs.png",
