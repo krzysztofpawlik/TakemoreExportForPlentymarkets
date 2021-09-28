@@ -21,6 +21,7 @@ use Plenty\Modules\Item\VariationStock\Models\VariationStock;
 use Plenty\Modules\Item\Property\Models\Property;
 use Plenty\Repositories\Models\PaginatedResult;
 use ElasticExport\Helper\ElasticExportCategoryHelper;
+use Plenty\Modules\Market\Helper\Contracts\MarketAttributeHelperRepositoryContract;
 
 /**
  * Class ExportFormatGenerator
