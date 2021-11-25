@@ -177,6 +177,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			$stock += $warehouse['netStock'];
 		}
 
+		$attributeValues = $this->getAttributeValues($variation);
 		$data = [
 			'VariationID' => $variation['id'],
 			'VariationNo' => $variation['data']['variation']['number'],
@@ -189,8 +190,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'VariantImages' => $variationImages,
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
-			'Size' => $this->getAttributeValues($variation)['size'],
-			'Color' => $this->getAttributeValues($variation)['color'],
+			'Size' => $attributeValues['size'],
+			'Color' => $attributeValues['color'],
 			'Currency' => $priceList['currency'],
 			'Price' => $priceList['price'],
 			'Quantity' => $stock,
