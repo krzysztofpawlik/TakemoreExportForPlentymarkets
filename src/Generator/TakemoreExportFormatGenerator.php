@@ -179,17 +179,17 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
 		$checker = 0;
-		foreach($stockList as $warehouse)
+		foreach($stockList as $warehouseStock)
 		{
-			$warehouseId = $warehouse['warehouseId'];
+			$warehouseId = $warehouseStock['warehouseId'];
 			if ($this->warehouses[$warehouseId] === null)
 			{
 				$warehouse = $this->warehouseRepositoryContract->findById($warehouseId);
-				$this->warehouses[$warehouseId] = $warehouse['typeId'];
+				$this->warehouses[$warehouseId] = $warehouse->typeId;
 				$checker++;
 			}
 			if ($this->warehouses[$warehouseId] === 0)
-				$stock += $warehouse['netStock'];
+				$stock += $warehouseStock['netStock'];
 		}
 
 		$attributeValues = $this->getAttributeValues($variation);
