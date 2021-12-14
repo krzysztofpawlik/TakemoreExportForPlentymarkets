@@ -22,6 +22,7 @@ use Plenty\Modules\Item\Property\Models\Property;
 use Plenty\Repositories\Models\PaginatedResult;
 use ElasticExport\Helper\ElasticExportCategoryHelper;
 use Plenty\Modules\Market\Helper\Contracts\MarketAttributeHelperRepositoryContract;
+use Plenty\Modules\StockManagement\Warehouse\Contracts\WarehouseRepositoryContract;
 
 /**
  * Class ExportFormatGenerator
@@ -42,6 +43,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	private $propertyRepositoryContract;
 	private $elasticExportCategoryHelper;
 	private $marketAttributeHelperRepository;
+	private $warehouses;
+	private $warehouseRepositoryContract;
 
     /**
      * ExportFormatGenerator constructor.
@@ -51,13 +54,15 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		VariationPropertyValueRepositoryContract $variationPropertyValueRepositoryContract,
 		VariationStockRepositoryContract $variationStockRepositoryContract,
 		PropertyRepositoryContract $propertyRepositoryContract,
-		MarketAttributeHelperRepositoryContract $marketAttributeHelperRepositoryContract)
+		MarketAttributeHelperRepositoryContract $marketAttributeHelperRepositoryContract,
+		WarehouseRepositoryContract $warehouseRepositoryContract)
     {
         $this->arrayHelper = $arrayHelper;
 		$this->variationPropertyValueRepositoryContract = $variationPropertyValueRepositoryContract;
 		$this->variationStockRepositoryContract = $variationStockRepositoryContract;
 		$this->propertyRepositoryContract = $propertyRepositoryContract;
 		$this->marketAttributeHelperRepository = $marketAttributeHelperRepositoryContract;
+		$this->warehouseRepositoryContract = $warehouseRepositoryContract;
     }
 
     /**
@@ -79,6 +84,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$this->filtrationService = pluginApp(FiltrationService::class, ['settings' => $settings, 'filterSettings' => $filter]);
 
 		$this->setDelimiter(";");
+		$this->warehouses = [];
 
 		$propertyResult = $this->propertyRepositoryContract->search();
 		if ($propertyResult instanceof PaginatedResult)
@@ -172,9 +178,18 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$properties = $variation['data']['properties'];
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
+		$checker = 0;
 		foreach($stockList as $warehouse)
 		{
-			$stock += $warehouse['netStock'];
+			$warehouseId = $warehouse['warehouseId'];
+			if ($this->warehouses[$warehouseId] === null)
+			{
+				$warehouse = $this->warehouseRepositoryContract->findById($warehouseId);
+				$this->warehouses[$warehouseId] = $warehouse['typeId'];
+				$checker++;
+			}
+			if ($this->warehouses[$warehouseId] === 0)
+				$stock += $warehouse['netStock'];
 		}
 
 		$attributeValues = $this->getAttributeValues($variation);
@@ -183,7 +198,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'VariationNo' => $variation['data']['variation']['number'],
 			'Parent' => $variation['data']['item']['id'],
 			'Model' => $variation['data']['variation']['model'],
-			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
+			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256) . "^" . $checker,
 			'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
 			'Category' => $this->getCategories($variation, $settings),
 			'ItemImages' => $itemImages,
