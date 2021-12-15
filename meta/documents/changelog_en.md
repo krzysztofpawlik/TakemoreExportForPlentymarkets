@@ -1,5 +1,10 @@
 # Release Notes for Elastic Export Takemore.net
 
+## v1.0.7 (2021-12-15)
+
+### Changed
+- Stock limited to sales warehouses
+
 ## v1.0.6 (2021-11-25)
  
 ### Changed

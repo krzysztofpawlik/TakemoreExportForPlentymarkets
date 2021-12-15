@@ -178,7 +178,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$properties = $variation['data']['properties'];
 		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
-		$checker = 0;
 		foreach($stockList as $warehouseStock)
 		{
 			$warehouseId = $warehouseStock['warehouseId'];
@@ -186,7 +185,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			{
 				$warehouse = $this->warehouseRepositoryContract->findById($warehouseId);
 				$this->warehouses[$warehouseId] = $warehouse->typeId;
-				$checker++;
 			}
 			if ($this->warehouses[$warehouseId] === 0)
 				$stock += $warehouseStock['netStock'];
@@ -198,7 +196,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'VariationNo' => $variation['data']['variation']['number'],
 			'Parent' => $variation['data']['item']['id'],
 			'Model' => $variation['data']['variation']['model'],
-			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256) . "^" . $checker,
+			'Name' => $this->elasticExportCoreHelper->getMutatedName($variation, $settings, 256),
 			'Description' => $this->elasticExportCoreHelper->getMutatedDescription($variation, $settings, 256),
 			'Category' => $this->getCategories($variation, $settings),
 			'ItemImages' => $itemImages,
