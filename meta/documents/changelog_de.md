@@ -1,5 +1,12 @@
 # Release Notes für Elastic Export Takemore.net
 
+## v1.0.8 (2022-01-11)
+ 
+### Hinzugefügt
+- Die Spalte "Variant" hinzugefügt
+### Geändert
+- Artikel ohne Lagerbestand werden nicht mehr exportiert
+
 ## v1.0.7 (2021-12-15)
 
 ### Geändert
