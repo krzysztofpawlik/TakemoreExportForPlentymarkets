@@ -103,6 +103,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
             'VariantImages',
             'Brand',
             'Barcode',
+			'Variant',
 			'Size',
 			'Color',
             'Currency',
@@ -206,6 +207,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			'VariantImages' => $variationImages,
 			'Brand' => $this->elasticExportCoreHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']),
 			'Barcode' => $this->elasticExportCoreHelper->getBarcodeByType($variation, $settings->get('barcode')),
+			'Variant' => $this->elasticExportCoreHelper->getAttributeValueSetShortFrontendName($variation, $settings),
 			'Size' => $attributeValues['size'],
 			'Color' => $attributeValues['color'],
 			'Currency' => $priceList['currency'],
@@ -230,8 +232,9 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			if (!$attribute['attributeValueSetId'])
 				continue;
 			$attributeName = strtolower($this->marketAttributeHelperRepository->getAttributeName($attribute['attributeId'], 'en'));
-			$attributeValueName = 'EN:' . $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'en')
-			. 'DE:' . $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'de');
+			$attributeValueName = $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'en');
+			if (!$attributeValueName)
+				$attributeValueName = $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'de');
 			$result[$attributeName] = $attributeValueName;
 		}
         return $result;
