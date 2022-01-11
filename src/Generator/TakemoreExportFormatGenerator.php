@@ -172,11 +172,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 	 */
     private function buildRow($variation, $settings)
 	{
-		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
-		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
-		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
-		$properties = $variation['data']['properties'];
-		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		$stock = 0;
 		foreach($stockList as $warehouseStock)
 		{
@@ -189,6 +184,14 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			if ($this->warehouses[$warehouseId] === 0)
 				$stock += $warehouseStock['netStock'];
 		}
+		if ($stock == 0)
+			return;
+
+		$priceList = $this->elasticExportPriceHelper->getPriceList($variation, $settings, 2, '.');
+		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
+		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
+		$properties = $variation['data']['properties'];
+		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 
 		$attributeValues = $this->getAttributeValues($variation);
 		$data = [
@@ -227,7 +230,8 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 			if (!$attribute['attributeValueSetId'])
 				continue;
 			$attributeName = strtolower($this->marketAttributeHelperRepository->getAttributeName($attribute['attributeId'], 'en'));
-			$attributeValueName = $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'en');
+			$attributeValueName = 'EN:' . $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'en')
+			. 'DE:' . $this->marketAttributeHelperRepository->getAttributeValueName($attribute['attributeId'], $attribute['valueId'], 'de');
 			$result[$attributeName] = $attributeValueName;
 		}
         return $result;
