@@ -173,6 +173,7 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
     private function buildRow($variation, $settings)
 	{
 		$stock = 0;
+		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 		foreach($stockList as $warehouseStock)
 		{
 			$warehouseId = $warehouseStock['warehouseId'];
@@ -191,7 +192,6 @@ class TakemoreExportFormatGenerator extends CSVPluginGenerator
 		$itemImages = implode(',', $this->getVariationImageList($variation, $settings, 'item'));
 		$variationImages = implode(',', $this->getVariationImageList($variation, $settings, 'variation'));
 		$properties = $variation['data']['properties'];
-		$stockList = $this->variationStockRepositoryContract->listStockByWarehouse($variation['id']);
 
 		$attributeValues = $this->getAttributeValues($variation);
 		$data = [
